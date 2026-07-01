@@ -25,7 +25,7 @@ create table Usuario (
 	apellido varchar(100) not null,
 	correo varchar(100) unique not null,
 	contrasena varchar(255) not null,
-	rol enum('ADMIN','EMPLEADO','HUESPED') not null,
+	rol varchar(50),
 	empleado_id_empleado int,
 	huesped_id_huesped int,
 	foreign key (empleado_id_empleado) references Empleado(id_empleado) on delete cascade,
