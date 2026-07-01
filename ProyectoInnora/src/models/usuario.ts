@@ -6,5 +6,7 @@ export interface usuario{
     apellido: string,
     correo: string,
     contrasena: string,
-    rol: Rol
+    rol: Rol,
+    empleado_id_empleado: number | null;
+    huesped_id_huesped: number | null;
 }
