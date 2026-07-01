@@ -1,6 +1,4 @@
-
-
-export interface empleado{
+export interface huesped{
     id_huesped: number,
     nombre: string,
     apellido: string,
