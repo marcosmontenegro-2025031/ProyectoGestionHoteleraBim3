@@ -1,15 +1,22 @@
 {
   "name": "ProyectoInnora",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "CLI interactiva para gestión de hotel - MySQL",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.28.1",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "mysql2": "^3.14.0"
+  },
   "devDependencies": {
     "@types/node": "^25.9.3",
     "ts-node": "^10.9.2",
