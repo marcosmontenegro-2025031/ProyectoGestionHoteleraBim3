@@ -1,0 +1,5 @@
+export enum Tipo {
+    EFECTIVO = 'EFECTIVO',
+    TARJETA = 'TARJETA',
+    TRANSFERENCIA = 'TRANSFERENCIA'
+}
