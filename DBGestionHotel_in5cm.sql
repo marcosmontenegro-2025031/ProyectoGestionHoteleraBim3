@@ -476,7 +476,7 @@ delimiter $$
 create procedure sp_reserva_create(
 	in p_fecha_entrada date,
     in p_fecha_salida date,
-    in p_estado varchar(50),
+    in p_estado enum('PENDIENTE','CONFIRMADA','CANCELADA','FINALIZADA'),
     in p_id_huesped int,
     in p_id_empleado int
 )
@@ -513,41 +513,40 @@ create procedure sp_reserva_read_by_id(
 )
 begin
 	select * from Reserva
-    where id_reserva = p_id;
+	where id_reserva = p_id;
 end$$
 delimiter ;
-
 
 delimiter $$
 create procedure sp_reserva_update(
 	in p_id int,
     in p_fecha_entrada date,
     in p_fecha_salida date,
-    in p_estado varchar(50),
+    in p_estado enum('PENDIENTE','CONFIRMADA','CANCELADA','FINALIZADA'),
     in p_id_huesped int,
     in p_id_empleado int
 )
 begin
 	update Reserva
-    set fecha_entrada = p_fecha_entrada,
+	set fecha_entrada = p_fecha_entrada,
 		fecha_salida = p_fecha_salida,
-        estado = p_estado,
-        id_huesped = p_id_huesped,
-        id_empleado = p_id_empleado
+		estado = p_estado,
+		id_huesped = p_id_huesped,
+		id_empleado = p_id_empleado
 	where id_reserva = p_id;
-    select row_count() as filas_afectadas;
+	select row_count() as filas_afectadas;
 end$$
 delimiter ;
 
-
 delimiter $$
+
 create procedure sp_reserva_delete(
 	in p_id int
 )
 begin
 	delete from Reserva
-    where id_reserva = p_id;
-    select row_count() as filas_afectadas;
+	where id_reserva = p_id;
+	select row_count() as filas_afectadas;
 end$$
 delimiter ;
 
@@ -558,7 +557,7 @@ create procedure sp_detalle_reserva_create(
     in p_id_habitacion int
 )
 begin
-	insert into Detalle_reserva(
+	insert into DetalleReserva(
 		id_reserva,
         id_habitacion
     )
@@ -573,7 +572,7 @@ delimiter ;
 delimiter $$
 create procedure sp_detalles_reserva_read_all()
 begin
-	select * from Detalle_reserva;
+	select * from DetalleReserva;
 end$$
 delimiter ;
 
@@ -583,7 +582,7 @@ create procedure sp_detalle_reserva_read_by_id(
 	in p_id int
 )
 begin
-	select * from Detalle_reserva
+	select * from DetalleReserva
     where id_detalle = p_id;
 end$$
 delimiter ;
@@ -596,7 +595,7 @@ create procedure sp_detalle_reserva_update(
     in p_id_habitacion int
 )
 begin
-	update Detalle_reserva
+	update DetalleReserva
     set id_reserva = p_id_reserva,
 		id_habitacion = p_id_habitacion
 	where id_detalle = p_id;
@@ -604,12 +603,13 @@ begin
 end$$
 delimiter ;
 
+
 delimiter $$
 create procedure sp_detalle_reserva_delete(
 	in p_id int
 )
 begin
-	delete from Detalle_reserva
+	delete from DetalleReserva
     where id_detalle = p_id;
     select row_count() as filas_afectadas;
 end$$

@@ -49,498 +49,555 @@ export const router = async (
 
     try {
         // =========================
-        // EMPLEADOS
-        // =========================
-        if (partes[1] === "empleados") {
-            const id = Number(partes[2]);
+// EMPLEADOS
+// =========================
+if (partes[0] === "empleados") {
 
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await empleadoService.obtenerTodos());
-            }
+    const id = Number(partes[1]);
 
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await empleadoService.obtenerPorId(id));
-            }
 
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await empleadoService.crear(
-                    datos.nombre,
-                    datos.apellido,
-                    datos.cargo
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
+    // GET todos los empleados
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(
+            res,
+            200,
+            await empleadoService.obtenerTodos()
+        );
+    }
 
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await empleadoService.actualizar(
-                    id,
-                    datos.nombre,
-                    datos.apellido,
-                    datos.cargo
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
 
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await empleadoService.eliminar(id));
-            }
+    // GET empleado por ID
+    if (metodo === "GET" && partes[1]) {
+
+        if (isNaN(id)) {
+            return enviarRespuesta(res, 400, {
+                mensaje: "ID inválido"
+            });
         }
 
-        // =========================
-        // HUESPEDES
-        // =========================
-        if (partes[1] === "huespedes") {
-            const id = Number(partes[2]);
+        return enviarRespuesta(
+            res,
+            200,
+            await empleadoService.obtenerPorId(id)
+        );
+    }
 
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await huespedService.obtenerTodos());
-            }
 
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await huespedService.obtenerPorId(id));
-            }
+    // POST crear empleado
+    if (metodo === "POST") {
 
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await huespedService.crear(
-                    datos.nombre,
-                    datos.apellido,
-                    datos.dpi,
-                    datos.telefono,
-                    datos.correo
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
+        const datos = await obtenerDatos(req);
 
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await huespedService.actualizar(
-                    id,
-                    datos.nombre,
-                    datos.apellido,
-                    datos.dpi,
-                    datos.telefono,
-                    datos.correo
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
+        const resultado = await empleadoService.crear(
+            datos.nombre,
+            datos.apellido,
+            datos.cargo
+        );
 
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await huespedService.eliminar(id));
-            }
+        return enviarRespuesta(
+            res,
+            201,
+            resultado
+        );
+    }
+
+
+    // PUT actualizar empleado
+    if (metodo === "PUT" && partes[1]) {
+
+        if (isNaN(id)) {
+            return enviarRespuesta(res, 400, {
+                mensaje: "ID inválido"
+            });
         }
 
-        // =========================
-        // USUARIOS
-        // =========================
-        if (partes[1] === "usuarios") {
-            const id = Number(partes[2]);
+        const datos = await obtenerDatos(req);
 
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await usuarioService.obtenerTodos());
-            }
+        const resultado = await empleadoService.actualizar(
+            id,
+            datos.nombre,
+            datos.apellido,
+            datos.cargo
+        );
 
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await usuarioService.obtenerPorId(id));
-            }
+        return enviarRespuesta(
+            res,
+            200,
+            resultado
+        );
+    }
 
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await usuarioService.crear(
-                    datos.nombre,
-                    datos.apellido,
-                    datos.correo,
-                    datos.contrasena,
-                    datos.rol,
-                    datos.empleado_id_empleado,
-                    datos.huesped_id_huesped
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
 
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await usuarioService.actualizar(
-                    id,
-                    datos.nombre,
-                    datos.apellido,
-                    datos.correo,
-                    datos.contrasena,
-                    datos.rol,
-                    datos.empleado_id_empleado,
-                    datos.huesped_id_huesped
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
+    // DELETE eliminar empleado
+    if (metodo === "DELETE" && partes[1]) {
 
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await usuarioService.eliminar(id));
-            }
+        if (isNaN(id)) {
+            return enviarRespuesta(res, 400, {
+                mensaje: "ID inválido"
+            });
         }
 
-        // =========================
-        // TIPOS DE HABITACION
-        // =========================
-        if (partes[1] === "tipos-habitacion") {
-            const id = Number(partes[2]);
-
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await tipoHabitacionService.obtenerTodos());
-            }
-
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await tipoHabitacionService.obtenerPorId(id));
-            }
-
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await tipoHabitacionService.crear(
-                    datos.nombre,
-                    datos.descripcion
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
-
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await tipoHabitacionService.actualizar(
-                    id,
-                    datos.nombre,
-                    datos.descripcion
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
-
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await tipoHabitacionService.eliminar(id));
-            }
-        }
+        return enviarRespuesta(
+            res,
+            200,
+            await empleadoService.eliminar(id)
+        );
+    }
+}
 
         // =========================
-        // HABITACIONES
-        // =========================
-        if (partes[1] === "habitaciones") {
-            const id = Number(partes[2]);
+// HUESPEDES
+// =========================
+if (partes[0] === "huespedes") {
+    const id = Number(partes[1]);
 
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await habitacionService.obtenerTodos());
-            }
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await huespedService.obtenerTodos());
+    }
 
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await habitacionService.obtenerPorId(id));
-            }
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await huespedService.obtenerPorId(id));
+    }
 
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await habitacionService.crear(
-                    datos.numero,
-                    datos.estado,
-                    datos.precio,
-                    datos.id_tipo_habitacion
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await huespedService.crear(
+            datos.nombre,
+            datos.apellido,
+            datos.dpi,
+            datos.telefono,
+            datos.correo
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
 
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await habitacionService.actualizar(
-                    id,
-                    datos.numero,
-                    datos.estado,
-                    datos.precio,
-                    datos.id_tipo_habitacion
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await huespedService.actualizar(
+            id,
+            datos.nombre,
+            datos.apellido,
+            datos.dpi,
+            datos.telefono,
+            datos.correo
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
 
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await habitacionService.eliminar(id));
-            }
-        }
-
-        // =========================
-        // RESERVAS
-        // =========================
-        if (partes[1] === "reservas") {
-            const id = Number(partes[2]);
-
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await reservaService.obtenerTodos());
-            }
-
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await reservaService.obtenerPorId(id));
-            }
-
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await reservaService.crear(
-                    datos.fecha_entrada,
-                    datos.fecha_salida,
-                    datos.estado,
-                    datos.id_huesped,
-                    datos.id_empleado
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
-
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await reservaService.actualizar(
-                    id,
-                    datos.fecha_entrada,
-                    datos.fecha_salida,
-                    datos.estado,
-                    datos.id_huesped,
-                    datos.id_empleado
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
-
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await reservaService.eliminar(id));
-            }
-        }
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await huespedService.eliminar(id));
+    }
+}
 
         // =========================
-        // DETALLE RESERVA
-        // =========================
-        if (partes[1] === "detalles-reserva") {
-            const id = Number(partes[2]);
+// USUARIOS
+// =========================
+if (partes[0] === "usuarios") {
+    const id = Number(partes[1]);
 
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await detalleReservaService.obtenerTodos());
-            }
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await usuarioService.obtenerTodos());
+    }
 
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await detalleReservaService.obtenerPorId(id));
-            }
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await usuarioService.obtenerPorId(id));
+    }
 
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await detalleReservaService.crear(
-                    datos.id_reserva,
-                    datos.id_habitacion
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await usuarioService.crear(
+            datos.nombre,
+            datos.apellido,
+            datos.correo,
+            datos.contrasena,
+            datos.rol,
+            datos.empleado_id_empleado,
+            datos.huesped_id_huesped
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
 
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await detalleReservaService.actualizar(
-                    id,
-                    datos.id_reserva,
-                    datos.id_habitacion
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await usuarioService.actualizar(
+            id,
+            datos.nombre,
+            datos.apellido,
+            datos.correo,
+            datos.contrasena,
+            datos.rol,
+            datos.empleado_id_empleado,
+            datos.huesped_id_huesped
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
 
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await detalleReservaService.eliminar(id));
-            }
-        }
-
-        // =========================
-        // HISTORIAL RESERVA
-        // =========================
-        if (partes[1] === "historial-reservas") {
-            const id = Number(partes[2]);
-
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await historialReservaService.obtenerTodos());
-            }
-
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await historialReservaService.obtenerPorId(id));
-            }
-
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await historialReservaService.crear(
-                    datos.estado_anterior,
-                    datos.estado_nuevo,
-                    datos.fecha,
-                    datos.id_reserva
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
-
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await historialReservaService.actualizar(
-                    id,
-                    datos.estado_anterior,
-                    datos.estado_nuevo,
-                    datos.fecha,
-                    datos.id_reserva
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
-
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await historialReservaService.eliminar(id));
-            }
-        }
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await usuarioService.eliminar(id));
+    }
+}
 
         // =========================
-        // SERVICIOS
-        // =========================
-        if (partes[1] === "servicios") {
-            const id = Number(partes[2]);
+// TIPOS DE HABITACION
+// =========================
+if (partes[0] === "tipos-habitacion") {
+    const id = Number(partes[1]);
 
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await servicioService.obtenerTodos());
-            }
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await tipoHabitacionService.obtenerTodos());
+    }
 
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await servicioService.obtenerPorId(id));
-            }
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await tipoHabitacionService.obtenerPorId(id));
+    }
 
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await servicioService.crear(
-                    datos.nombre,
-                    datos.precio
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await tipoHabitacionService.crear(
+            datos.nombre,
+            datos.descripcion
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
 
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await servicioService.actualizar(
-                    id,
-                    datos.nombre,
-                    datos.precio
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await tipoHabitacionService.actualizar(
+            id,
+            datos.nombre,
+            datos.descripcion
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
 
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await servicioService.eliminar(id));
-            }
-        }
-
-        // =========================
-        // CONSUMO SERVICIO
-        // =========================
-        if (partes[1] === "consumos-servicio") {
-            const id = Number(partes[2]);
-
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await consumoServicioService.obtenerTodos());
-            }
-
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await consumoServicioService.obtenerPorId(id));
-            }
-
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await consumoServicioService.crear(
-                    datos.cantidad,
-                    datos.id_reserva,
-                    datos.id_servicio
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
-
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await consumoServicioService.actualizar(
-                    id,
-                    datos.cantidad,
-                    datos.id_reserva,
-                    datos.id_servicio
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
-
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await consumoServicioService.eliminar(id));
-            }
-        }
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await tipoHabitacionService.eliminar(id));
+    }
+}
 
         // =========================
-        // METODOS DE PAGO
+// HABITACIONES
+// =========================
+if (partes[0] === "habitaciones") {
+    const id = Number(partes[1]);
+
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await habitacionService.obtenerTodos());
+    }
+
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await habitacionService.obtenerPorId(id));
+    }
+
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await habitacionService.crear(
+            datos.numero,
+            datos.estado,
+            datos.precio,
+            datos.id_tipo_habitacion
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
+
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await habitacionService.actualizar(
+            id,
+            datos.numero,
+            datos.estado,
+            datos.precio,
+            datos.id_tipo_habitacion
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
+
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await habitacionService.eliminar(id));
+    }
+}
+
         // =========================
-        if (partes[1] === "metodos-pago") {
-            const id = Number(partes[2]);
+// RESERVAS
+// =========================
+if (partes[0] === "reservas") {
+    const id = Number(partes[1]);
 
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await metodoPagoService.obtenerTodos());
-            }
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await reservaService.obtenerTodos());
+    }
 
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await metodoPagoService.obtenerPorId(id));
-            }
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await reservaService.obtenerPorId(id));
+    }
 
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await metodoPagoService.crear(
-                    datos.tipo
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await reservaService.crear(
+            datos.fecha_entrada,
+            datos.fecha_salida,
+            datos.estado,
+            datos.id_huesped,
+            datos.id_empleado
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
 
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await metodoPagoService.actualizar(
-                    id,
-                    datos.tipo
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await reservaService.actualizar(
+            id,
+            datos.fecha_entrada,
+            datos.fecha_salida,
+            datos.estado,
+            datos.id_huesped,
+            datos.id_empleado
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
 
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await metodoPagoService.eliminar(id));
-            }
-        }
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await reservaService.eliminar(id));
+    }
+}
 
         // =========================
-        // FACTURAS
+// DETALLE RESERVA
+// =========================
+if (partes[0] === "detalles-reserva") {
+    const id = Number(partes[1]);
+
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await detalleReservaService.obtenerTodos());
+    }
+
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await detalleReservaService.obtenerPorId(id));
+    }
+
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await detalleReservaService.crear(
+            datos.id_reserva,
+            datos.id_habitacion
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
+
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await detalleReservaService.actualizar(
+            id,
+            datos.id_reserva,
+            datos.id_habitacion
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
+
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await detalleReservaService.eliminar(id));
+    }
+}
+
         // =========================
-        if (partes[1] === "facturas") {
-            const id = Number(partes[2]);
+// HISTORIAL RESERVA
+// =========================
+if (partes[0] === "historial-reservas") {
+    const id = Number(partes[1]);
 
-            if (metodo === "GET" && !partes[2]) {
-                return enviarRespuesta(res, 200, await facturaService.obtenerTodos());
-            }
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await historialReservaService.obtenerTodos());
+    }
 
-            if (metodo === "GET" && partes[2]) {
-                return enviarRespuesta(res, 200, await facturaService.obtenerPorId(id));
-            }
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await historialReservaService.obtenerPorId(id));
+    }
 
-            if (metodo === "POST") {
-                const datos = await obtenerDatos(req);
-                const resultado = await facturaService.crear(
-                    datos.numero_factura,
-                    datos.total,
-                    datos.fecha,
-                    datos.id_reserva,
-                    datos.id_metodo_pago
-                );
-                return enviarRespuesta(res, 201, resultado);
-            }
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await historialReservaService.crear(
+            datos.estado_anterior,
+            datos.estado_nuevo,
+            datos.fecha,
+            datos.id_reserva
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
 
-            if (metodo === "PUT" && partes[2]) {
-                const datos = await obtenerDatos(req);
-                const resultado = await facturaService.actualizar(
-                    id,
-                    datos.numero_factura,
-                    datos.total,
-                    datos.fecha,
-                    datos.id_reserva,
-                    datos.id_metodo_pago
-                );
-                return enviarRespuesta(res, 200, resultado);
-            }
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await historialReservaService.actualizar(
+            id,
+            datos.estado_anterior,
+            datos.estado_nuevo,
+            datos.fecha,
+            datos.id_reserva
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
 
-            if (metodo === "DELETE" && partes[2]) {
-                return enviarRespuesta(res, 200, await facturaService.eliminar(id));
-            }
-        }
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await historialReservaService.eliminar(id));
+    }
+}
+
+        // =========================
+// SERVICIOS
+// =========================
+if (partes[0] === "servicios") {
+    const id = Number(partes[1]);
+
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await servicioService.obtenerTodos());
+    }
+
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await servicioService.obtenerPorId(id));
+    }
+
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await servicioService.crear(
+            datos.nombre,
+            datos.precio
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
+
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await servicioService.actualizar(
+            id,
+            datos.nombre,
+            datos.precio
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
+
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await servicioService.eliminar(id));
+    }
+}
+
+        // =========================
+// CONSUMO SERVICIO
+// =========================
+if (partes[0] === "consumos-servicio") {
+    const id = Number(partes[1]);
+
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await consumoServicioService.obtenerTodos());
+    }
+
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await consumoServicioService.obtenerPorId(id));
+    }
+
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await consumoServicioService.crear(
+            datos.cantidad,
+            datos.id_reserva,
+            datos.id_servicio
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
+
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await consumoServicioService.actualizar(
+            id,
+            datos.cantidad,
+            datos.id_reserva,
+            datos.id_servicio
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
+
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await consumoServicioService.eliminar(id));
+    }
+}
+
+// =========================
+// METODOS DE PAGO
+// =========================
+if (partes[0] === "metodos-pago") {
+    const id = Number(partes[1]);
+
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await metodoPagoService.obtenerTodos());
+    }
+
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await metodoPagoService.obtenerPorId(id));
+    }
+
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await metodoPagoService.crear(
+            datos.tipo
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
+
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await metodoPagoService.actualizar(
+            id,
+            datos.tipo
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
+
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await metodoPagoService.eliminar(id));
+    }
+}
+
+        // =========================
+// FACTURAS
+// =========================
+if (partes[0] === "facturas") {
+    const id = Number(partes[1]);
+
+    if (metodo === "GET" && !partes[1]) {
+        return enviarRespuesta(res, 200, await facturaService.obtenerTodos());
+    }
+
+    if (metodo === "GET" && partes[1]) {
+        return enviarRespuesta(res, 200, await facturaService.obtenerPorId(id));
+    }
+
+    if (metodo === "POST") {
+        const datos = await obtenerDatos(req);
+        const resultado = await facturaService.crear(
+            datos.numero_factura,
+            datos.total,
+            datos.fecha,
+            datos.id_reserva,
+            datos.id_metodo_pago
+        );
+        return enviarRespuesta(res, 201, resultado);
+    }
+
+    if (metodo === "PUT" && partes[1]) {
+        const datos = await obtenerDatos(req);
+        const resultado = await facturaService.actualizar(
+            id,
+            datos.numero_factura,
+            datos.total,
+            datos.fecha,
+            datos.id_reserva,
+            datos.id_metodo_pago
+        );
+        return enviarRespuesta(res, 200, resultado);
+    }
+
+    if (metodo === "DELETE" && partes[1]) {
+        return enviarRespuesta(res, 200, await facturaService.eliminar(id));
+    }
+}
 
         enviarRespuesta(res, 404, {
             mensaje: "Ruta no encontrada"
