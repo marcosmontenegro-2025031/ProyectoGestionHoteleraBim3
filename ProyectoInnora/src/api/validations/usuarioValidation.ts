@@ -1,62 +1,85 @@
-import {z} from "zod";
+import { z } from "zod";
 
+export const usuarioSchema = z.object({
 
-export const usuarioSchema=z.object({
-
-    nombre:z
+    nombre: z
         .string({
-            error:"El nombre es obligatorio"
+            error: "El nombre es obligatorio"
         })
-        .min(3)
-        .max(100),
+        .trim()
+        .min(3, {
+            error: "El nombre debe tener al menos 3 caracteres"
+        })
+        .max(100, {
+            error: "El nombre no puede superar los 100 caracteres"
+        }),
 
-
-    apellido:z
+    apellido: z
         .string({
-            error:"El apellido es obligatorio"
+            error: "El apellido es obligatorio"
         })
-        .min(3)
-        .max(100),
+        .trim()
+        .min(3, {
+            error: "El apellido debe tener al menos 3 caracteres"
+        })
+        .max(100, {
+            error: "El apellido no puede superar los 100 caracteres"
+        }),
 
-
-    correo:z
+    correo: z
         .string({
-            error:"El correo es obligatorio"
+            error: "El correo es obligatorio"
         })
-        .email(),
+        .trim()
+        .email({
+            error: "El correo electrónico no es válido"
+        }),
 
-
-    contrasena:z
+    contrasena: z
         .string({
-            error:"La contraseña es obligatoria"
+            error: "La contraseña es obligatoria"
         })
-        .min(6)
-        .max(255),
+        .min(6, {
+            error: "La contraseña debe tener al menos 6 caracteres"
+        })
+        .max(255, {
+            error: "La contraseña no puede superar los 255 caracteres"
+        }),
 
+    rol: z
+        .string({
+            error: "El rol debe ser texto"
+        })
+        .trim()
+        .max(50, {
+            error: "El rol no puede superar los 50 caracteres"
+        }),
 
-    rol:z
-        .string()
-        .max(50)
-        .optional(),
+    empleado_id_empleado: z
+        .number({
+            error: "El ID del empleado debe ser un número"
+        })
+        .int({
+            error: "El ID del empleado debe ser entero"
+        })
+        .positive({
+            error: "El ID del empleado debe ser mayor que 0"
+        }),
 
-
-    empleado_id_empleado:z
-        .number()
-        .int()
-        .positive()
-        .optional(),
-
-
-    huesped_id_huesped:z
-        .number()
-        .int()
-        .positive()
-        .optional()
+    huesped_id_huesped: z
+        .number({
+            error: "El ID del huésped debe ser un número"
+        })
+        .int({
+            error: "El ID del huésped debe ser entero"
+        })
+        .positive({
+            error: "El ID del huésped debe ser mayor que 0"
+        })
 
 });
 
-
-export const validarUsuario=(data:any)=>{
+export const validarUsuario = (data: unknown) => {
 
     return usuarioSchema.parse(data);
 

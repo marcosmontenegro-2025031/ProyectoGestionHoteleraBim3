@@ -1,25 +1,31 @@
-import {z} from "zod";
+import { z } from "zod";
 
+export const tipoHabitacionSchema = z.object({
 
-export const tipoHabitacionSchema=z.object({
-
-    nombre:z
+    nombre: z
         .string({
-            error:"El nombre es obligatorio"
+            error: "El nombre es obligatorio"
         })
-        .min(3)
-        .max(100),
+        .trim()
+        .min(3, {
+            error: "El nombre debe tener al menos 3 caracteres"
+        })
+        .max(100, {
+            error: "El nombre no puede superar los 100 caracteres"
+        }),
 
-
-    descripcion:z
-        .string()
-        .max(255)
-        .optional()
+    descripcion: z
+        .string({
+            error: "La descripción debe ser texto"
+        })
+        .trim()
+        .max(255, {
+            error: "La descripción no puede superar los 255 caracteres"
+        })
 
 });
 
-
-export const validarTipoHabitacion=(data:any)=>{
+export const validarTipoHabitacion = (data: unknown) => {
 
     return tipoHabitacionSchema.parse(data);
 

@@ -1,23 +1,31 @@
-import {z} from "zod";
+import { z } from "zod";
 
+export const servicioSchema = z.object({
 
-export const servicioSchema=z.object({
+    nombre: z
+        .string({
+            error: "El nombre del servicio es obligatorio"
+        })
+        .trim()
+        .min(3, {
+            error: "El nombre debe tener al menos 3 caracteres"
+        })
+        .max(100, {
+            error: "El nombre no puede superar los 100 caracteres"
+        }),
 
-    nombre:z
-        .string()
-        .min(3)
-        .max(100),
-
-
-    precio:z
-        .number()
-        .positive()
+    precio: z
+        .number({
+            error: "El precio es obligatorio"
+        })
+        .positive({
+            error: "El precio debe ser mayor que 0"
+        })
 
 });
 
+export const validarServicio = (data: unknown) => {
 
-export const validarServicio=(data:any)=>{
-
-return servicioSchema.parse(data);
+    return servicioSchema.parse(data);
 
 };

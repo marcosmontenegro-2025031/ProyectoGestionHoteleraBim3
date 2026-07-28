@@ -1,19 +1,23 @@
-import {z} from "zod";
+import { z } from "zod";
 
+export const metodoPagoSchema = z.object({
 
-export const metodoPagoSchema=z.object({
-
-tipo:z.enum([
-"EFECTIVO",
-"TARJETA",
-"TRANSFERENCIA"
-])
+    tipo: z
+        .enum(
+            [
+                "EFECTIVO",
+                "TARJETA",
+                "TRANSFERENCIA"
+            ],
+            {
+                error: "El tipo de pago no es válido"
+            }
+        )
 
 });
 
+export const validarMetodoPago = (data: unknown) => {
 
-export const validarMetodoPago=(data:any)=>{
-
-return metodoPagoSchema.parse(data);
+    return metodoPagoSchema.parse(data);
 
 };

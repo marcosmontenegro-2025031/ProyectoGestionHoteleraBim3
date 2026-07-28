@@ -1,61 +1,53 @@
 import { z } from "zod";
 
-
 export const historialReservaSchema = z.object({
 
     estado_anterior: z
         .string({
-            error:"El estado anterior es obligatorio"
+            error: "El estado anterior es obligatorio"
         })
-        .min(
-            3,
-            "El estado anterior es inválido"
-        )
-        .max(
-            50,
-            "El estado anterior no puede superar 50 caracteres"
-        ),
-
+        .trim()
+        .min(3, {
+            error: "El estado anterior debe tener al menos 3 caracteres"
+        })
+        .max(50, {
+            error: "El estado anterior no puede superar los 50 caracteres"
+        }),
 
     estado_nuevo: z
         .string({
-            error:"El estado nuevo es obligatorio"
+            error: "El estado nuevo es obligatorio"
         })
-        .min(
-            3,
-            "El estado nuevo es inválido"
-        )
-        .max(
-            50,
-            "El estado nuevo no puede superar 50 caracteres"
-        ),
-
+        .trim()
+        .min(3, {
+            error: "El estado nuevo debe tener al menos 3 caracteres"
+        })
+        .max(50, {
+            error: "El estado nuevo no puede superar los 50 caracteres"
+        }),
 
     fecha: z
         .string({
-            error:"La fecha es obligatoria"
+            error: "La fecha es obligatoria"
         })
-        .datetime(
-            "La fecha debe tener formato datetime válido"
-        ),
-
+        .datetime({
+            error: "La fecha debe tener formato datetime válido"
+        }),
 
     id_reserva: z
         .number({
-            error:"La reserva es obligatoria"
+            error: "El ID de la reserva es obligatorio"
         })
-        .positive(
-            "El ID de reserva debe ser válido"
-        )
-        .int(
-            "El ID debe ser entero"
-        )
+        .int({
+            error: "El ID de la reserva debe ser entero"
+        })
+        .positive({
+            error: "El ID de la reserva debe ser mayor que 0"
+        })
 
 });
 
-
-
-export const validarHistorialReserva = (data:any)=>{
+export const validarHistorialReserva = (data: unknown) => {
 
     return historialReservaSchema.parse(data);
 

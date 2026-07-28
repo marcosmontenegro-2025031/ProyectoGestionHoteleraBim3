@@ -1,22 +1,20 @@
-export class AppError extends Error {
+import { ZodError } from "zod";
 
-    statusCode:number;
+export const formatearErrores = (error: unknown) => {
 
+    if (error instanceof ZodError) {
 
-    constructor(
-        message:string,
-        statusCode:number
-    ){
-
-        super(message);
-
-        this.statusCode = statusCode;
-
-        Object.setPrototypeOf(
-            this,
-            AppError.prototype
-        );
+        return error.issues.map((issue) => ({
+            campo: issue.path.join("."),
+            mensaje: issue.message
+        }));
 
     }
 
-}
+    return [
+        {
+            campo: "general",
+            mensaje: "Error de validación"
+        }
+    ];
+};
